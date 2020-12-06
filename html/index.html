@@ -6,15 +6,14 @@
     <link rel="stylesheet" href="css/style.css">
     <title>Document</title>
 </head>
-<body>
+<body background="images/backgrounds/background.jpg">
     <div class="block">
-        <div class="blockfirst">
-            <div class="blockfirst__checkout">
-                <span>Checkout</span>
+        <div class="first">
+            <div class="first__checkout">
+                <strong>Checkout</strong>
             </div>
             <div>
-                <span>
-                    <ul class="blockfirst__list">
+                    <ul class="first__path">
                         <li>
                             Shipping /
                         </li>
@@ -25,16 +24,72 @@
                            / Confirmation
                         </li>
                     </ul>
-                </span>
                     <i class="fa fa-window-close close"></i>
             </div>
         </div>
-        <div class="blocksecond">
-            <div class="blocksecond__pay">
-                <p>Payment Block</p>
+        <div class="second">
+            <div class="second__pay">
+                <div class="second__pay--WalletCard"><strong>Wallet</strong></div>
+                <div class="WalletCard--Cards">
+                    <img src="images/cards/discover.png" alt="">
+                    <img class="second__pay--shadow" src="images/cards/mastercard.png" alt="">
+                    <img src="images/cards/visa.png" alt="">
+                </div>
+                <div class="second__pay--WalletCard"><strong>New Card</strong></div>
+            <div class="second__pay--Card">
+                <div class="second__pay--InputText"><input type="text" placeholder="Name on Card"></div>
+                <div class="second__pay--InputText"><input type="text" placeholder="xxxx-xxxx-xxxx-xxxx"></div>
+                    <div class="Card__CVVDATE">  
+                        <div class="second__pay--DateCVV">
+                            <input type="text" placeholder="MM/YY">
+                        </div>
+                        <div class="second__pay--DateCVV">
+                            <input type="text" placeholder="CVV">
+                        </div>
+                    </div>
+                <div class="button"><button>Continue</button></div>
             </div>
-            <div class="blocksecond__card">
-              <p>Card Block</p>
+            </div>
+            <div class="second__list">
+                <div class="list">
+                    <div class="second__list--item"><img src="images/products/mobile-holder.jpg" alt=""></div>
+                    <div><strong>Mobile Holder</strong><span><br><i>Black</i><br><b>Quantity</b>: 1</span></div>
+                    <div class="price">$10</div>
+                </div>
+                <hr>
+                <div class="list">
+                    <div class="second__list--item"><img src="images/products/rado.jpg" alt=""></div>
+                    <div><strong>Rado Watch</strong><span><br><i>Black</i><br><b>Quantity</b>: 1</span></div>
+                    <div class="price">$10</div>
+                </div>
+                <hr>
+                <div class="list">
+                    <div class="second__list--item"><img src="images/products/usb-c-2-micro.jpeg" alt=""></div>
+                    <div><strong>C type to Micro Converter</strong><span><br><i>Black</i><br><b>Quantity</b>: 1</span></div>
+                    <div class="price">$10</div>
+                </div>
+                <hr>
+                <div class="list">
+                    <div class="second__list--item"><img src="images/products/hard-case.jpg" alt=""></div>
+                    <div><strong>Mobile Case</strong><span><br><i>Black</i><br><b>Quantity</b>: 1</span></div>
+                    <div class="price">$10</div>
+                </div>
+                <div class="second__list--SubTotal">
+                    <hr>
+                    <div class="list__SubTotal--Total">
+                        <div >Sub Total</div><div class="price">$ 100.00</div>
+                    </div>
+                    <div class="list__SubTotal--Total">
+                        <div>Shipping</div><div class="price">$ 10.00</div>
+                    </div>
+                    <div class="list__SubTotal--Total">
+                        <div>Taxes</div><div class="price">$ 5.00</div>
+                    </div>
+                    <hr>
+                    <div class="list__SubTotal--Total">
+                        <div><b>Total</b></div><div class="price"><b>$ 115.00</b></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
