@@ -1,56 +1,155 @@
-.block{
-    width: 1040px;
-    height: 88px;
+.block {
     display: block;
-    margin: auto;
-    margin-top: 100px;
+    margin: 5%;
     box-shadow: 6px 8px 11px grey;
     border: 1px solid grey;
+    background-color: white;
+    color: dimgray;
+    flex-direction: column;
 }
 
-  .blockfirst{
-      display: flex;
-      position: relative;
-      height: 44px;
-  }
+.first {
+    display: flex;
+    position: relative;
+    height: 44px;
+    border-bottom: 1px solid grey;
+}
 
-  .blockfirst__checkout{
+.first__checkout {
     margin: 13px;
     padding-right: 108px;
 }
 
-  .blockfirst__list{
-      list-style-type: none;
-      display: flex;
-      margin: 8px;
+.first__path {
+    list-style-type: none;
+    display: flex;
+    margin: 8px;
   }
 
-  .blockfirst__list li{
-      margin: 5px;
-  }
- 
-  .blocksecond{
-      display: flex;
-      height: 44px;
-  }
-  .blocksecond__pay{
-      background-color: white;
-      width: 530px;
-      padding-left: 20px;
-      border-top: 1px solid grey;
+.first__path li {
+    margin: 5px;
   }
 
-  .blocksecond__card{
-      background-color:rgb(184, 184, 184);
-      width: 470px;
-      padding-left: 20px;
-      border-top: 1px solid grey;
-      border-left: 1px solid grey;
+.second__pay--WalletCard {
+    margin: 10px;
+    margin-top: 35px;
+    border-bottom: 1px solid grey;
   }
 
-  .close{
-      position: absolute;
-      right: 0px;
-      top: 0px;
-      margin: 14px;
+.second {
+    display: flex;
   }
+
+.second__list {
+    padding-top: 15px;
+    background-color: rgb(219, 219, 219);
+    height: 100%;
+    width: 40%;
+    position: relative;
+}
+
+.list {
+    display: flex;
+}
+
+.second__list--item {
+    height: 60px;
+    width: 55px;
+    background-color: grey;
+    margin: 5px;
+    padding-right: 5px;
+}
+
+.second__list--item img {
+    margin: 5px;
+    width: 50px;
+    height: 50px;
+} 
+
+.price {
+    position: absolute;
+    right: 4px;
+}
+
+.second__pay {
+    width: 60%;
+}
+
+.second__pay--Card {
+    display: inline-block;
+    margin-left: 21%;
+    margin-top: 8%;
+}
+
+.WalletCard--Cards {
+    margin-left: 1%;
+    margin-right: -5%;
+    margin-top: 5%;
+}
+input{
+    width: 300px;
+    height: 36px;
+    padding: 6px;
+}
+
+.Card__CVVDATE {
+    display: flex;
+}
+
+.second__pay--DateCVV {
+    padding-left: 3px;
+  }
+
+.second__pay--DateCVV input{
+    width: 147.5px;
+  }
+
+
+.second__pay--InputText {
+    display: flex;
+    margin: 1%;
+}
+
+.second__list--SubTotal {
+    padding-top: 25%;
+    margin:5px;
+}
+
+.list__SubTotal--Total {
+    display: flex;
+    margin: 1%;
+}
+
+.close {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    margin: 14px;
+    color: black;
+  }
+
+img {
+    width: 29%;
+    margin: 1%;
+  }
+
+img:hover {
+    opacity: .5;
+}
+
+button {
+      margin: 20px 3px;
+      width: 298px;
+      height: 36px;
+      color: white;
+      background-color: #4CAF50;
+      border: none;
+  }
+
+.list span {
+    font-size:10px;
+}
+
+span {
+    font-size:12px;
+}
