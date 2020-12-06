@@ -1,0 +1,56 @@
+.block{
+    width: 1040px;
+    height: 88px;
+    display: block;
+    margin: auto;
+    margin-top: 100px;
+    box-shadow: 6px 8px 11px grey;
+    border: 1px solid grey;
+}
+
+  .blockfirst{
+      display: flex;
+      position: relative;
+      height: 44px;
+  }
+
+  .blockfirst__checkout{
+    margin: 13px;
+    padding-right: 108px;
+}
+
+  .blockfirst__list{
+      list-style-type: none;
+      display: flex;
+      margin: 8px;
+  }
+
+  .blockfirst__list li{
+      margin: 5px;
+  }
+ 
+  .blocksecond{
+      display: flex;
+      height: 44px;
+  }
+  .blocksecond__pay{
+      background-color: white;
+      width: 530px;
+      padding-left: 20px;
+      border-top: 1px solid grey;
+  }
+
+  .blocksecond__card{
+      background-color:rgb(184, 184, 184);
+      width: 470px;
+      padding-left: 20px;
+      border-top: 1px solid grey;
+      border-left: 1px solid grey;
+  }
+
+  .close{
+      position: absolute;
+      right: 0px;
+      top: 0px;
+      margin: 14px;
+  }
