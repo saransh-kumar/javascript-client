@@ -1,6 +1,6 @@
 .block {
     display: block;
-    margin: 5%;
+    margin: 100px;
     box-shadow: 6px 8px 11px grey;
     border: 1px solid grey;
     background-color: white;
@@ -30,14 +30,14 @@
     margin: 5px;
   }
 
+.second {
+    display: flex;
+  }
+
 .second__pay--WalletCard {
     margin: 10px;
     margin-top: 35px;
     border-bottom: 1px solid grey;
-  }
-
-.second {
-    display: flex;
   }
 
 .second__list {
@@ -77,8 +77,8 @@
 
 .second__pay--Card {
     display: inline-block;
-    margin-left: 21%;
-    margin-top: 8%;
+    padding-left: 35%;
+    padding-top: 5%;
 }
 
 .WalletCard--Cards {
@@ -86,8 +86,9 @@
     margin-right: -5%;
     margin-top: 5%;
 }
+
 input{
-    width: 300px;
+    width: 243px;
     height: 36px;
     padding: 6px;
 }
@@ -97,17 +98,16 @@ input{
 }
 
 .second__pay--DateCVV {
-    padding-left: 3px;
+    padding: 2px;
   }
 
-.second__pay--DateCVV input{
-    width: 147.5px;
+.second__pay--DateCVV input {
+    width: 119.8px;
   }
-
 
 .second__pay--InputText {
     display: flex;
-    margin: 1%;
+    padding: 1%;
 }
 
 .second__list--SubTotal {
@@ -138,8 +138,8 @@ img:hover {
 }
 
 button {
-      margin: 20px 3px;
-      width: 298px;
+      margin: 13px 2.5px;
+      width: 242px;
       height: 36px;
       color: white;
       background-color: #4CAF50;
@@ -152,4 +152,65 @@ button {
 
 span {
     font-size:12px;
+}
+
+@media screen and (max-width: 992px) {
+
+    .block {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 992px) {
+
+    .second__pay--Card {
+        padding-left: 26%;
+        padding-top: 6%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .first__path {
+        display: none;
+    }
+
+    .second__pay--Card {
+        padding-left: 7%;
+        padding-top: 8%;
+    }
+
+    .second__pay {
+        width: 50%;
+    }
+
+    .second__list {
+        width: 50%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .second {
+        flex-direction: column-reverse;
+    }
+    .second__list {
+        width: 100%;
+    }
+    .second__pay {
+        width: 100%;
+    }
+    .second__pay--Card {
+        padding-top: 0px;
+        padding-left: 20%;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    img {
+        width: 78%;
+        margin: 25px;
+    }
+    .second__pay--Card {
+        padding-left: 3%;
+    }
 }
