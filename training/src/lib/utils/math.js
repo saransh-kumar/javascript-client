@@ -15,4 +15,4 @@ const getNextRoundRobin = (total, current) => {
     return next;
   }
 
-export {getNextRoundRobin, getRandomNumber};
+export { getNextRoundRobin, getRandomNumber };

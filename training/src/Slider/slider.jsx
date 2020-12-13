@@ -38,7 +38,7 @@ class Slider extends Component {
 
     componentWillUnmount() {
         console.log('Inside Unmount');
-        clearInterval(this.id); 
+        clearInterval(this.id);
     }
 
     render() { 
