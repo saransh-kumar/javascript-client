@@ -1,11 +1,12 @@
 import React from 'react';
-
 import PropTypes from 'prop-types';
+
+import { Error } from './style';
 
 class RadioGroup extends React.Component {
 
     render() {
-        const { error, onChange, options } = this.props;
+        const { error, onChange, options, onBlur } = this.props;
         return ( 
             <>
                 <input 
@@ -16,6 +17,7 @@ class RadioGroup extends React.Component {
                     error={error} 
                     onChange={onChange} 
                     options={options[0]}
+                    onBlur={onBlur}
                 />
                 <label htmlFor={options[0].label}>
                     {options[0].value}
@@ -27,6 +29,7 @@ class RadioGroup extends React.Component {
                     value={options[1].value}
                     error={error} 
                     onChange={onChange} 
+                    onBlur={onBlur}
                     options={options[1]}
                 />
                 <label htmlFor={options[1].label}>
@@ -38,7 +41,8 @@ class RadioGroup extends React.Component {
                     type='radio'
                     value={options[2].value} 
                     error={error} 
-                    onChange={onChange} 
+                    onChange={onChange}
+                    onBlur={onBlur}
                     options={options[2]}
                 />
                 <label htmlFor={options[2].label}>
@@ -50,12 +54,14 @@ class RadioGroup extends React.Component {
                     type='radio'
                     value={options[3].value} 
                     error={error} 
-                    onChange={onChange} 
+                    onChange={onChange}
+                    onBlur={onBlur}
                     options={options[3]}
                 />
                 <label htmlFor={options[3].label}>
                     {options[3].value}
                 </label><br></br>
+                <Error>{ error }</Error>
             </>
         );
     }
@@ -65,7 +71,13 @@ RadioGroup.propTypes = {
     error: PropTypes.string,
     value: PropTypes.string.isRequired,
     onChange: PropTypes.string,
+    onBlur: PropTypes.func,
     options: PropTypes.string,
 }
+
+RadioGroup.defaultProps = {
+    error: '',
+    options: [],
+  };
 
 export default RadioGroup;

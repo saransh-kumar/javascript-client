@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Input } from './style';
+import { Input, Error } from './style';
 
 class TextField extends Component {
     render() {
-        const { value, disabled, error, pattern, onChange } = this.props;
+        const { value, disabled, error, pattern, onChange, onBlur } = this.props;
         return (
             <>
                 <Input 
@@ -14,7 +14,9 @@ class TextField extends Component {
                     onChange={onChange}
                     error={error}
                     pattern={pattern}
+                    onBlur= { onBlur }
                 />
+                <Error>{ error }</Error>
             </>
         );
     }
@@ -30,6 +32,7 @@ TextField.propTypes = {
   error: PropTypes.string,
   pattern: PropTypes.string,
   onChange: PropTypes.string,
+  onBlur: PropTypes.func,
 }
 
 export default TextField;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Select from './style';
+import { Select, Error } from './style';
 import PropTypes from 'prop-types';
 import * as constants from '../../config/constants';
 // import Input from '../TextField/index';
@@ -8,10 +8,10 @@ import * as constants from '../../config/constants';
 class SelectField extends React.Component {
 
     render() {
-        const { value, error, onChange, options } = this.props;
+        const { value, error, onChange, options, onBlur } = this.props;
         return ( 
             <>
-                <Select value={value} error={error} onChange={onChange} options={options}>
+                <Select value={value} error={error} onChange={onChange} options={options} onBlur={onBlur}>
                     <option value=''>
                     { constants.defaultText }
                     </option>
@@ -22,6 +22,7 @@ class SelectField extends React.Component {
                     {options[1].value}
                     </option>
                 </Select>
+                <Error>{ error }</Error>
             </>
         );
     }
@@ -32,6 +33,13 @@ SelectField.propTypes = {
     value: PropTypes.string,
     onChange: PropTypes.string,
     options: PropTypes.instanceOf(Array),
+    onBlur: PropTypes.func,
 }
 
+SelectField.defaultProps = {
+    error: '',
+    options: [],
+    defaultText: 'Select',
+  };
+  
 export default SelectField;
