@@ -15,9 +15,8 @@ ${props =>
     `};
 `;
 
-
 const Input = styled.input`
-width: 99%;
+width: 54%;
 height:32px;
 
 ${props =>
