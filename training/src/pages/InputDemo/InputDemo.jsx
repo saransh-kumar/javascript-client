@@ -49,10 +49,12 @@ class InputDemo extends Component {
   
     hasErrors(){
         try {
+            console.log('States',this.state);
           this.schema.validateSync(this.state);
         } catch (err) {
           return true;
         }
+        
         return false;
     }
   
@@ -118,7 +120,7 @@ class InputDemo extends Component {
                     options={ constants.sport }
                 />
             </Div>
-            {
+            {/* {
                 sports === constants.cricket ? (
                     <>
                         <Div><p><b>What you do?</b></p></Div>
@@ -133,33 +135,32 @@ class InputDemo extends Component {
                         </Div>
                     </>
                 ) : (<p></p>)
-            }
+            } */}
             {
-                sports === constants.football ? (
+                sports === '' ? (<p></p>) :
+                (
                     <>
                         <Div><p><b>What you do?</b></p></Div>
                         <Div>
                             <RadioGroup
-                                value= { football }
-                                error={ this.getError('football') }
-                                onChange={ handleFootballChange }
-                                onBlur={ () => { this.isTouched('football')} }
-                                options={ constants.footballRole }
+                                value= { sports === constants.cricket ? cricket : football }
+                                error={ sports === constants.cricket ? this.getError(constants.crick) : this.getError(constants.foot) }
+                                onChange={ sports === constants.cricket ? handleCricketChange : handleFootballChange }
+                                onBlur={ () => { sports === constants.cricket ? this.isTouched(constants.crick) : this.isTouched(constants.foot)} }
+                                options={ sports === constants.cricket ? constants.cricketRole : constants.footballRole }
                             />
                         </Div>
                     </>
-                ) : (<p></p>)
+                )
             }
             <Div primary>
                 <Button
                     value='Cancel'
-                    color=''
-                    disableb=''
+                    disabled=''
                 />
                 <Button
                     value='Submit'
-                    color=''
-                    disabled= { this.hasErrors() }
+                    disabled= { true }
                 />
             </Div>
         </>
