@@ -23,7 +23,7 @@ class AddDialog extends React.Component {
             name: false,
             email: false,
             password: false,
-            confirm: false,
+            confirmPassword: false,
         },
     };
   }
@@ -42,9 +42,7 @@ schema = yup.object().shape({
       .matches(/(?=.*[0-9])/, 'should have atleast one number')
       .matches(/(?=.*[@#$%^&+=])/, 'should have atleast one special character')
       .min(8,'minimum 8 characters'),
-    confirm: yup.string()
-      .required('confirm password is missing').min(3),
-      // .oneOf([yup.ref('password')], 'confirm password not same'),
+    confirmPassword: yup.string().required('confirm password required').oneOf([yup.ref('password')], 'password do not match'),
 });
 
 handleClickOpen = () => {
@@ -90,7 +88,7 @@ isTouched(field){
 }
 render() {
 
-  const { name, email, password, confirm,  open } = this.state;
+  const { name, email, password,  open, confirmPassword } = this.state;
 
   const handleNameChange = (event) => {
     this.setState( {name: event.target.value}, () => {
@@ -107,10 +105,8 @@ render() {
       console.log(this.state);
     });
   }
-  const handleConfirmChange = (event) => {
-    this.setState( {confirm_password: event.target.value}, () => {
-      console.log(this.state);
-    });
+  const handleConfirmPassword = event => {
+    this.setState( {confirmPassword: event.target.value});
   }
     return (
       <div>
@@ -193,25 +189,25 @@ render() {
             <div>
               <div>
                 <TextField
-                  margin='dense'
-                  value={ confirm }
-                  id='confirm'
-                  label='Confirm Password'
-                  type='password'
-                  variant='outlined'
-                  error={ this.getError('confirm') }
-                  onBlur={ () => { this.isTouched('confirm')} }
-                  onChange= { handleConfirmChange }
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position='start'>
-                        <VisibilityOffIcon />
-                      </InputAdornment>
-                    )
-                  }}
-                />
+                      margin='dense'
+                      value = { confirmPassword }
+                      id='confirmPassword'
+                      label='Confirm Password'
+                      type='password'
+                      variant='outlined'
+                      error={ this.getError('confirmPassword') }
+                      onBlur={ () => { this.isTouched('confirmPassword')} }
+                      onChange= { handleConfirmPassword }
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position='start'>
+                            <VisibilityOffIcon />
+                          </InputAdornment>
+                        )
+                      }}
+                  />
               </div>
-              <Div><p>{this.getError('confirm')}</p></Div>
+                <Div><p>{this.getError('confirmPassword')}</p></Div>
             </div>
             </Box>
           </DialogContent>
