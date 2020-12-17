@@ -5,4 +5,7 @@ const Div = styled.div`
     margin-top: 0%;
     margin-bottom: 0%;
 `
-export { Div }
+const P = styled.div`
+    margin-bottom:3%;
+`
+export { Div, P }

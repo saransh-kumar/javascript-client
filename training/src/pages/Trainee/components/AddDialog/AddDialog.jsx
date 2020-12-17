@@ -12,7 +12,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import * as yup from 'yup';
-import { Div } from './style';
+import { Div, P } from './style';
 
 class AddDialog extends React.Component {
   constructor() {
@@ -141,7 +141,7 @@ render() {
               }}
               fullWidth
             />
-            <Div><p>{ this.getError('name')}</p></Div>
+            <Div><P>{ this.getError('name')}</P></Div>
             <TextField
               margin='dense'
               label='Email Address'
@@ -161,7 +161,7 @@ render() {
               }}
               fullWidth
             />
-            <Div><p>{this.getError('email')}</p></Div>
+            <Div><P>{this.getError('email')}</P></Div>
             <Box display='flex'>
             <div>
               <div>
@@ -184,7 +184,7 @@ render() {
                   }}
                 />
               </div>
-            <Div><p>{this.getError('password')}</p></Div>
+            <Div><P>{this.getError('password')}</P></Div>
               </div>
             <div>
               <div>
@@ -195,6 +195,7 @@ render() {
                       label='Confirm Password'
                       type='password'
                       variant='outlined'
+                      style= {{marginLeft: '10px'}}
                       error={ this.getError('confirmPassword') }
                       onBlur={ () => { this.isTouched('confirmPassword')} }
                       onChange= { handleConfirmPassword }
@@ -207,7 +208,7 @@ render() {
                       }}
                   />
               </div>
-                <Div><p>{this.getError('confirmPassword')}</p></Div>
+                <Div><P>{this.getError('confirmPassword')}</P></Div>
             </div>
             </Box>
           </DialogContent>
@@ -215,7 +216,7 @@ render() {
             <Button onClick={this.handleClose} color='primary'>
               Cancel
             </Button>
-            <Button onClick={this.handleClose} color='primary' disabled={this.hasErrors()}>
+            <Button onClick={this.handleClose} variant='contained' color='primary' disabled={this.hasErrors()}>
               Submit
             </Button>
           </DialogActions>
