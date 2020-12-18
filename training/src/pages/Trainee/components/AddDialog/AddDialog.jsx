@@ -51,7 +51,7 @@ handleClickOpen = () => {
   });
 }
 
-handleClose = () => {
+handleClosed = () => {
   this.setState({
     open: false
   });
@@ -115,7 +115,7 @@ render() {
         </Button>
         <Dialog
           open={open}
-          onClick={this.handleClosed}
+          onClose={this.handleClosed}
           aria-labelledby='form-dialog-title'
           autoFocus={false}
         >
@@ -213,10 +213,10 @@ render() {
             </Box>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleClose} color='primary'>
+            <Button onClick={this.handleClosed} color='primary'>
               Cancel
             </Button>
-            <Button onClick={this.handleClose} variant='contained' color='primary' disabled={this.hasErrors()}>
+            <Button onClick={this.handleClosed} variant='contained' color='primary' disabled={this.hasErrors()}>
               Submit
             </Button>
           </DialogActions>

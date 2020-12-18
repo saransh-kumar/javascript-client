@@ -5,7 +5,7 @@ const Div = styled.div`
     margin-top: 0%;
     margin-bottom: 0%;
 `
-const P = styled.div`
-    margin-bottom:3%;
+const P = styled.p`
+    margin-top:-1%;
 `
 export { Div, P }
