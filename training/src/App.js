@@ -4,27 +4,25 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import themeStyle from './theme';
 // import {Trainee} from './pages'
 // import { TextFieldDemo } from './pages/index';
-import { InputDemo } from '../src/pages/index';
+// import { InputDemo } from '../src/pages/index';
 // import { ChildrenDemo } from './pages/ChildrenDemo/index';
+import { Login } from './pages/index';
+// import { Navbar } from './pages';
 
 
 function App() {
   return (
     <>
       <ThemeProvider theme={themeStyle}>
-          {/* <Trainee /> */}
           {/* <ChildrenDemo /> */}
           {/* <TextFieldDemo /> */}
-          <InputDemo />
+          {/* <InputDemo /> */}
+          <Login />
+          {/* < Navbar /> */}
+          {/* <Trainee /> */}
       </ThemeProvider>
     </>
   );
 }
 
 export default App;
-
-
-      {/* <AddDialog /> */}
-      {/* <ChildrenDemo /> */}
-      {/* <TextFieldDemo /> */}
-      <InputDemo />

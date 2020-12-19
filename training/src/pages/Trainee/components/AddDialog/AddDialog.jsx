@@ -42,7 +42,7 @@ schema = yup.object().shape({
       .matches(/(?=.*[0-9])/, 'should have atleast one number')
       .matches(/(?=.*[@#$%^&+=])/, 'should have atleast one special character')
       .min(8,'minimum 8 characters'),
-    confirmPassword: yup.string().required('confirm password required').oneOf([yup.ref('password')], 'password do not match'),
+    confirmPassword: yup.string().required('confirm password required').oneOf([yup.ref('password')], 'passwords do not match'),
 });
 
 handleClickOpen = () => {
@@ -86,6 +86,7 @@ isTouched(field){
       },
     });
 }
+
 render() {
 
   const { name, email, password,  open, confirmPassword } = this.state;
@@ -110,7 +111,7 @@ render() {
   }
     return (
       <div>
-        <Button variant='outlined' color='primary' onClick={this.handleClickOpen}>
+        <Button variant='outlined' color='primary' onClick={this.handleClickOpen} style={{marginTop: '30px'}}>
           Add Trainee
         </Button>
         <Dialog
