@@ -26,8 +26,8 @@ class InputDemo extends Component {
     schema = yup.object().shape({
         name: yup.string().required('name is a required field').min(3),
         sports: yup.string().required('sport is a required field'),
-        cricket: yup.string().required('select an option'),        // cricket: yup.string().when('sports', { is: 'cricket', then: yup.string().required('What you do is a required field') }),
-        football: yup.string().required('select an option'),        // football: yup.string().when('sports', { is: 'football', then: yup.string().required('What you do is a required field') }),
+        cricket: yup.string().when('sports', { is: 'cricket', then: yup.string().required('What you do is a required field') }),
+        football: yup.string().when('sports', { is: 'football', then: yup.string().required('What you do is a required field') }),
     });
 
     sportsState() {
