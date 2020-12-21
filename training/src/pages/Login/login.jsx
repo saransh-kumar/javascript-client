@@ -82,7 +82,7 @@ class Login extends React.Component {
     return (
       <Container component="main" maxWidth="xs" >
         <CssBaseline />
-        <Box boxShadow={3} maxWidth="lg" p={2} mt={20}>
+        <Box boxShadow={3} maxWidth="lg" p={2} mt={15}>
           <Avatar style={{backgroundColor:'red', margin:'auto' }} >
             <LockOutlinedIcon />
           </Avatar>
@@ -103,7 +103,6 @@ class Login extends React.Component {
               label="Email Address"
               name="email"
               autoComplete="email"
-              autoFocus
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -137,7 +136,6 @@ class Login extends React.Component {
             />
             <div><p style={{color: 'red', marginTop: '0px'}}>{ this.getError('password')}</p></div>
             <Button
-              type="submit"
               fullWidth
               variant="contained"
               color="primary"
