@@ -118,38 +118,22 @@ class InputDemo extends Component {
                     options={ constants.sport }
                 />
             </Div>
-            {
-                sports === constants.cricket ? (
-                    <>
+                {
+                    sports === '' ? <p></p> : (
+                        <>
                         <Div><p><b>What you do?</b></p></Div>
                         <Div>
                             <RadioGroup
-                                value= { cricket }
-                                error={ this.getError('cricket') }
-                                onChange={ handleCricketChange }
-                                onBlur={ () => { this.isTouched('cricket')} }
-                                options={ constants.cricketRole }
+                                value= { sports === constants.cricket ? cricket : football }
+                                error={ sports === constants.cricket ? this.getError(constants.crick) : this.getError(constants.foot) }
+                                onChange={ sports === constants.cricket ? handleCricketChange : handleFootballChange }
+                                onBlur={ sports === constants.cricket ? () => { this.isTouched(constants.crick)} : () => { this.isTouched(constants.foot)}}
+                                options={ sports === constants.cricket ? constants.cricketRole : constants.footballRole }
                             />
                         </Div>
                     </>
-                ) : (<p></p>)
-            }
-            {
-                sports === constants.football ? (
-                    <>
-                        <Div><p><b>What you do?</b></p></Div>
-                        <Div>
-                            <RadioGroup
-                                value= { football }
-                                error={ this.getError('football') }
-                                onChange={ handleFootballChange }
-                                onBlur={ () => { this.isTouched('football')} }
-                                options={ constants.footballRole }
-                            />
-                        </Div>
-                    </>
-                ) : (<p></p>)
-            }
+                    )
+                }
             <Div primary>
                 <Button
                     value='Cancel'
