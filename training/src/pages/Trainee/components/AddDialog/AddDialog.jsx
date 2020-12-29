@@ -112,7 +112,7 @@ render() {
     return (
       <div>
         <Button variant='outlined' color='primary' onClick={this.handleClickOpen} style={{marginTop: '30px'}}>
-          Add Trainee
+          Add TraineeList
         </Button>
         <Dialog
           open={open}
