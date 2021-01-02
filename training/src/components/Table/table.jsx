@@ -1,59 +1,85 @@
-import React from "react";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
-import { array } from "yup/lib/locale";
+import React from 'react';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TableSortLabel,
+} from '@material-ui/core';
+import Paper from '@material-ui/core/Paper';
+import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 
-export default class Tables extends React.Component{
-    render() {
-        const { data, columns } = this.props;
-        return (
-            <TableContainer component={Paper}>
-                <Table aria-label="simple table">
-                    <TableHead>
-                        <TableRow>
-                        {
-                            columns.map(({label, align}) => (
-                                <>
-                                    <TableCell align={align}>{label}</TableCell>
-                                </>
-                                ))
-                        }
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                            {
-                                data.map(({name, email}) => (
-                                        <>
-                                            <TableRow>
-                                                {
-                                                    columns[0].label === 'Name' ? (
-                                                        <>
-                                                            <TableCell align='center'>{name}</TableCell> <TableCell>{email}</TableCell>
-                                                        </>
-                                                    ) : (
-                                                        <>
-                                                            <TableCell>{email}</TableCell> <TableCell align='center'>{name}</TableCell>
-                                                        </>)
-                                                }
-                                            </TableRow>
-                                        </>
-                                ))
-                            }
-                        
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        );
-  }
-}
+const StyledTableRow = withStyles((theme) => ({
+    root: {
+      '&:nth-of-type(odd)': {
+        backgroundColor: theme.palette.background.default,
+      },
+    },
+  }))(TableRow);
 
-Tables.propTypes = {
-    data: PropTypes.objectOf(array),
-    columns: PropTypes.objectOf(array)
+export default function MyTable(props) {
+  const {
+    id, data, column, order, orderBy,
+  } = props;
+
+  const handleSort = (field) => () => {
+    const { onSort } = props;
+    onSort(field);
+  };
+
+  return (
+    <TableContainer component={Paper}>
+      <Table aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            {
+              column.map((item) => (
+                <>
+                  <TableCell key={item.label} align={item.align}>
+                    <TableSortLabel
+                      active={orderBy === item.field}
+                      direction={order}
+                      onClick={handleSort(item.field)}
+                      align={item.align}
+                    >
+                      {item.label}
+                    </TableSortLabel>
+                  </TableCell>
+                </>
+              ))
+            }
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {data.map((trainees) => (
+            <StyledTableRow key={trainees[id]} hover={true}>
+              {
+                column.map((item) => (
+                  <TableCell key={`${trainees[id]}${item.field}`} align={item.align}>
+                    {item.format ? item.format(trainees[item.field]) : trainees[item.field] }
+                  </TableCell>
+                ))
+              }
+            </StyledTableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
 }
+MyTable.propTypes = {
+  id: PropTypes.string.isRequired,
+  column: PropTypes.arrayOf(Object).isRequired,
+  data: PropTypes.arrayOf(Object).isRequired,
+  order: PropTypes.string,
+  orderBy: PropTypes.string,
+  onSort: PropTypes.func,
+};
+MyTable.defaultProps = {
+  order: '',
+  orderBy: '',
+  onSort: () => {},
+};

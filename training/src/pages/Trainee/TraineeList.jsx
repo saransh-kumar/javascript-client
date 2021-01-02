@@ -1,86 +1,100 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { withStyles } from '@material-ui/core';
-import { AddDialog } from './components/index';
+import PropTypes from 'prop-types';
+import { AddDialog } from './components';
 import trainees from './data/trainee';
-import { Tables } from '../../components/Table';
+import { Tables } from '../../components/index';
+import { getFormattedDate } from '../../lib/utils/getFormattedDate';
 
-const useStyles = (theme) => ({
-  root: {
-    margin: theme.spacing(2),
-  },
-  dialog: {
-    textAlign: 'right',
-  },
-});
-
-class TraineeList extends React.Component {
-  constructor(props) {
-    super(props);
+const asend = 'asc';
+const dsend = 'desc';
+class TraineeList extends Component {
+  constructor() {
+    super();
     this.state = {
       open: false,
+      orderBy: '',
+      order: asend,
     };
   }
 
-  handleClickOpen = () => {
+  onOpen = () => {
     this.setState({ open: true });
-  };
+  }
 
-  handleClose = () => {
-    const { open } = this.state;
+  onCloseEvent = () => {
     this.setState({ open: false });
-    return open;
   };
 
-  handleSubmit = (data) => {
-    this.setState({
-      open: false,
-    }, () => {
-      console.log(data);
-    });
+  handleSort = (field) => {
+    const { order, orderBy } = this.state;
+    let tabOrder = asend;
+    if (orderBy === field && order === asend) {
+      tabOrder = dsend;
+    }
+    this.setState({ orderBy: field, order: tabOrder });
+  }
+
+  handleSelect = (data) => {
+    const { history } = this.props;
+    history.push(`/trainee/${data.id}`);
   }
 
   render() {
-    const { open } = this.state;
-    const { match: { url }, classes } = this.props;
+    const { open, order, orderBy } = this.state;
+    const { match } = this.props;
     return (
       <>
-        <div className={classes.root}>
-          <AddDialog open={open} onClose={this.handleClose} onSubmit={() => this.handleSubmit} />
-          <Tables
-            id='id'
-            data={ trainees }
-            columns={
-              [
-                {
-                  field: 'name',
-                  label: 'Name',
-                  align: 'center',
-                },
-                {
-                  field: 'email',
-                  label: 'Email Address',
-                },
-              ]
-            }
+        <div style={{ display: 'flex', justifyContent: 'end' }}>
+          <AddDialog
+            open={open}
+            onClose={this.onCloseEvent}
+            onSubmit={this.onCloseEvent}
+            align='right'
           />
-          <ul>
-            {trainees.map(({ name, id }) => (
-              <li key={id}>
-                <Link to={`${url}/${id}`}>
-                  {name}
-                </Link>
-              </li>
-            ))}
-          </ul>
+        </div>
+        <Tables
+          id="id"
+          data={trainees}
+          column={[
+            {
+              field: 'name',
+              label: 'Name',
+            },
+            {
+              field: 'email',
+              label: 'Email Address',
+              format: (value) => value && value.toUpperCase(),
+            },
+            {
+              field: 'createdAt',
+              label: 'Date',
+              align: 'right',
+              format: getFormattedDate,
+            },
+          ]}
+          orderBy={orderBy}
+          order={order}
+          onSort={this.handleSort}
+          onSelect={this.handleSelect}
+        />
+        <div>
+          {
+            trainees.map((item) => (
+              <ul key={item.id}>
+                <li>
+                  <Link to={`${match.path}/${item.id}`}>{item.name}</Link>
+                </li>
+              </ul>
+            ))
+          }
         </div>
       </>
     );
   }
 }
 TraineeList.propTypes = {
-  match: PropTypes.objectOf(PropTypes.object).isRequired,
-  classes: PropTypes.objectOf(PropTypes.string).isRequired,
+  match: PropTypes.objectOf(PropTypes.any).isRequired,
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
 };
-export default withStyles(useStyles)(TraineeList);
+export default TraineeList;

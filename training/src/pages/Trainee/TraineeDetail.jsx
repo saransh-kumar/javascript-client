@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link, Route } from 'react-router-dom';
-import moment from 'moment';
+import { getFormattedDate } from '../../lib/utils/getFormattedDate';
+
 import {
   withStyles, Card, CardContent, Typography, CardMedia, Button,
 } from '@material-ui/core';
@@ -44,7 +45,6 @@ const TraineeDetails = (props) => {
   const { classes } = props;
   const { match } = props;
   const traineeData = trainees.find(({ id }) => id === match.params.traineeId);
-  const getDateFormatted = () => moment(traineeData.createdAt).format('dddd, MMMM Do YYYY, h:mm:ss a');
   if (traineeData === undefined) {
     return (
       <Route component={NoMatch} />
@@ -62,7 +62,7 @@ const TraineeDetails = (props) => {
               {traineeData.name}
             </Typography>
             <Typography component="subtitle1" color="textSecondary">
-              {getDateFormatted()}
+              {getFormattedDate()}
             </Typography>
             <Typography component="h6" variant="h6">
               {traineeData.email}
