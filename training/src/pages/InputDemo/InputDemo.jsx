@@ -118,7 +118,7 @@ class InputDemo extends Component {
                     options={ constants.sport }
                 />
             </Div>
-                {
+                {/* {
                     sports === '' ? <p></p> : (
                         <>
                         <Div><p><b>What you do?</b></p></Div>
@@ -127,13 +127,39 @@ class InputDemo extends Component {
                                 value= { sports === constants.cricket ? cricket : football }
                                 error={ sports === constants.cricket ? this.getError(constants.crick) : this.getError(constants.foot) }
                                 onChange={ sports === constants.cricket ? handleCricketChange : handleFootballChange }
-                                onBlur={ sports === constants.cricket ? () => { this.isTouched(constants.crick)} : () => { this.isTouched(constants.foot)}}
+                                onBlur={ () => { this.isTouched('sports')} }
                                 options={ sports === constants.cricket ? constants.cricketRole : constants.footballRole }
                             />
                         </Div>
                     </>
                     )
-                }
+                } */}
+            {
+                sports === constants.cricket ? (
+                    <Div>
+                        <RadioGroup
+                            value= { cricket }
+                            error={ this.getError(constants.crick) }
+                            onChange={ handleCricketChange }
+                            options={ constants.cricketRole }
+                            onBlur={ () => { this.isTouched('cricket')} }
+                        />
+                    </Div>
+                ) : (<p></p>)
+            }
+            {
+                sports === constants.football ? (
+                    <Div>
+                        <RadioGroup
+                            value= { football }
+                            error={this.getError(constants.foot)}
+                            onChange={ handleFootballChange }
+                            options={ constants.footballRole }
+                            onBlur={ () => { this.isTouched('football')} }
+                        />
+                    </Div>
+                ) : (<p></p>)
+            }
             <Div primary>
                 <Button
                     value='Cancel'

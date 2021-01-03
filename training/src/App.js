@@ -16,7 +16,7 @@ function App() {
   return (
     
     <>
-      <ThemeProvider theme={themeStyle}>
+      <ThemeProvider theme={ themeStyle }>
         <Router>
           <Switch>
             <Route exact path="/" component={ Trainee }>
