@@ -1,29 +1,77 @@
 import React, { Component } from 'react';
-import Dialog from '@material-ui/core/Dialog';
 import PropTypes from 'prop-types';
-import DialogActions from '@material-ui/core/DialogActions';
-import Button from '@material-ui/core/Button';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContentText from '@material-ui/core/DialogContentText';
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Button,
+} from '@material-ui/core';
+
+import { SnackBarContext } from '../../../../contexts';
 
 class DeleteDialog extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  handleDeleteClose = (event, value) => {
+    event.preventDefault();
+    const { details, onClose } = this.props;
+    const originalDate = new Date(details.createdAt);
+    const dateCheck = new Date('2019-02-14');
+    if (originalDate > dateCheck) {
+      // eslint-disable-next-line no-console
+      console.log('Deleted Item', details);
+      value('Successfully Deleted!', 'success');
+    } else {
+      value("Can't Delete!", 'error');
+    }
+    onClose();
+  };
+
   render() {
-    const { open, onClose, onSubmit } = this.props;
+    const { deleteOpen, onClose } = this.props;
     return (
-      <Dialog open={open} onClose={onClose} aria-labelledby="form-dialog-title" fullWidth maxWidth="md">
-        <DialogTitle style={{ alignContent: 'start' }}>Delete Trainee</DialogTitle>
-        <DialogContentText style={{ paddingLeft: '25px' }}>Do you really want to delete Trainee</DialogContentText>
-        <DialogActions>
-          <Button onClick={onClose} color="primary">Cancel</Button>
-          <Button onClick={onSubmit} color="primary" variant="contained">Delete</Button>
-        </DialogActions>
-      </Dialog>
+      <SnackBarContext.Consumer>
+        {(value) => (
+          <Dialog open={deleteOpen} onClose={onClose}>
+            <DialogTitle>Remove Trainee</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Do you really want to remove trainee?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={onClose} color="primary">
+                Cancel
+              </Button>
+              <Button
+                onClick={(event) => this.handleDeleteClose(event, value)}
+                color="primary"
+                variant="contained"
+              >
+                Delete
+              </Button>
+            </DialogActions>
+          </Dialog>
+        )}
+      </SnackBarContext.Consumer>
     );
   }
 }
+
 DeleteDialog.propTypes = {
-  open: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired,
+  details: PropTypes.objectOf(PropTypes.any).isRequired,
+  onClose: PropTypes.func,
+  deleteOpen: PropTypes.bool,
 };
+
+DeleteDialog.defaultProps = {
+  onClose: () => { },
+  deleteOpen: false,
+};
+
 export default DeleteDialog;

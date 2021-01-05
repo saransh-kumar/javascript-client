@@ -71,14 +71,13 @@ class TraineeList extends Component {
     }
     this.setState({ orderBy: field, order: tabOrder });
   }
-
-  // handleSelect = (data) => {
-  //   const { history } = this.props;
-  //   history.push(`/trainee/${data.id}`);
-  // }
-
+  
   handlePageChange = (event, page) => {
     this.setState({ page });
+  }
+
+  handleSubmit = () => {
+    this.setState({ open: false });
   }
 
   render() {
@@ -89,7 +88,6 @@ class TraineeList extends Component {
       orderBy,
       page,
       edit,
-      traineeInfo,
     } = this.state;
     const { match } = this.props;
     return (
@@ -98,7 +96,7 @@ class TraineeList extends Component {
           <AddDialog
             open={open}
             onClose={this.onCloseEvent}
-            onSubmit={this.onCloseEvent}
+            onSubmit={this.handleSubmit}
           />
         </div>
         <Tables
@@ -141,18 +139,16 @@ class TraineeList extends Component {
         <>
           { edit && (
             <EditDialog
-              details={traineeInfo}
-              open={edit}
+              editOpen={edit}
               onClose={this.editDialogClose}
-              onSubmit={this.handleEdit}
-              item={this.selectedItem}
+              details={trainees}
             />
           )}
           { deleteDialog && (
             <DeleteDialog
-              open={deleteDialog}
+              deleteOpen={deleteDialog}
               onClose={this.deleteDialogClose}
-              onSubmit={this.handleDelete}
+              details={trainees}
             />
           )}
         </>

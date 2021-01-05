@@ -1,20 +1,25 @@
 import React, { Component } from 'react';
-import Dialog from '@material-ui/core/Dialog';
 import PropTypes from 'prop-types';
-import DialogActions from '@material-ui/core/DialogActions';
-import Button from '@material-ui/core/Button';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import TextField from '@material-ui/core/TextField';
-import EmailIcon from '@material-ui/icons/Email';
-import PersonIcon from '@material-ui/icons/Person';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import * as Yup from 'yup';
+import * as yup from 'yup';
+
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Button,
+  TextField,
+  InputAdornment,
+} from '@material-ui/core';
+
+import { Email, Person } from '@material-ui/icons';
+import { SnackBarContext } from '../../../../contexts';
 
 class EditDialog extends Component {
-  schema = Yup.object().shape({
-    name: Yup.string().required('Name is Required Field'),
-    email: Yup.string().email().required('Email is Required Field'),
+  schema = yup.object().shape({
+    name: yup.string().required().min(3).label('Name'),
+    email: yup.string().email().required().label('Email'),
   });
 
   constructor(props) {
@@ -22,132 +27,199 @@ class EditDialog extends Component {
     this.state = {
       name: '',
       email: '',
-      touched: {},
+      touched: {
+        name: false,
+        email: false,
+      },
     };
   }
 
-  handelNameChange = (event) => {
-    this.setState({ name: event.target.value }, () => {
-    });
-  }
-
-  handelEmailChange = (event) => {
-    this.setState({ email: event.target.value }, () => {
-    });
-  }
-
-  hasError = () => {
-    const {
-      name,
-      email,
-    } = this.state;
-    const data = {
-      name: `${name}`,
-      email: `${email}`,
-    };
-    try {
-      return !this.schema.validateSync(data);
-    } catch (err) {
-      return true;
+  handleNameValue = (event) => {
+    const { details } = this.props;
+    const { email, touched } = this.state;
+    if (email === '') {
+      this.setState({
+        email: details.email,
+      });
     }
-  }
+    this.setState({
+      name: event.target.value,
+      touched: {
+        ...touched,
+        name: true,
+      },
+    });
+  };
 
-  onToched = (componant) => {
-    const { touched } = this.state;
-    this.setState({ touched: { ...touched, [componant]: true } });
-  }
+  handleEmailValue = (event) => {
+    const { details } = this.props;
+    const { name, touched } = this.state;
+    if (name === '') {
+      this.setState({
+        name: details.name,
+      });
+    }
+    this.setState({
+      email: event.target.value,
+      touched: {
+        ...touched,
+        email: true,
+      },
+    });
+  };
 
-  isTouched = () => {
+  getError = (field) => {
     const { touched } = this.state;
-    return Object.keys(touched).length !== 0;
-  }
-
-  getError = (componant) => {
-    const {
-      name,
-      email,
-    } = this.state;
-    const data = {
-      name: `${name}`,
-      email: `${email}`,
-    };
-    const { touched } = this.state;
-    if (touched[componant] && this.hasError) {
+    if (touched[field] && this.hasErrors()) {
       try {
-        this.schema.validateSyncAt(componant, data);
+        this.schema.validateSyncAt(field, this.state);
       } catch (err) {
         return err.message;
       }
     }
-    return null;
-  }
+    return '';
+  };
+
+  hasErrors = () => {
+    const { state } = this;
+    try {
+      this.schema.validateSync(state);
+    } catch (err) {
+      return true;
+    }
+    return false;
+  };
+
+  handleButtonError = () => {
+    if (this.hasErrors()) {
+      return false;
+    }
+    return true;
+  };
+
+  isTouched = (field) => {
+    const { touched } = this.state;
+    this.setState({
+      touched: {
+        ...touched,
+        [field]: true,
+      },
+    });
+  };
+
+  isValid = (item) => {
+    const { state } = this;
+    const { touched } = state;
+
+    if (touched[[item]] === false) {
+      return false;
+    }
+    return this.hasErrors();
+  };
+
+  onConsole = () => {
+    const { name, email } = this.state;
+    // eslint-disable-next-line no-console
+    console.log('Edited Item', { name, email });
+    this.setState({
+      buttonEnable: false,
+      name: '',
+      email: '',
+      touched: {
+        name: false,
+        email: false,
+      },
+    });
+  };
+
+  onSubmit = (event, value) => {
+    const { onClose } = this.props;
+    this.onConsole();
+    value('Successfully Edited!', 'success');
+    onClose();
+  };
 
   render() {
-    const {
-      open,
-      onClose,
-      details,
-      onSubmit,
-    } = this.props;
-    const { name, email } = this.state;
-    // name = details.name;
-    // email = details.email;
+    const { editOpen, onClose, details } = this.props;
     return (
-      <Dialog open={open} onClose={onClose} aria-labelledby="form-dialog-title" fullWidth maxWidth="md">
-        <DialogTitle style={{ alignContent: 'start' }}>Edit Trainee</DialogTitle>
-        <DialogContentText style={{ paddingLeft: '25px' }}>Enter your trainee details</DialogContentText>
-        <div style={{ paddingLeft: '12px', paddingTop: '8px', paddingRight: '12px' }}>
-          <TextField
-            // value={name}
-            defaultValue={details.name}
-            error={this.getError('name')}
-            helperText={this.getError('name')}
-            onChange={this.handelNameChange}
-            onBlur={() => this.onToched('name')}
-            label="Name*"
-            variant="outlined"
-            fullWidth
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <PersonIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-        </div>
-        <div style={{ paddingLeft: '12px', paddingTop: '8px', paddingRight: '12px' }}>
-          <TextField
-            // value={email}
-            defaultValue={details.email}
-            error={this.getError('email')}
-            helperText={this.getError('email')}
-            onChange={this.handelEmailChange}
-            onBlur={() => this.onToched('email')}
-            label="Email*"
-            variant="outlined"
-            fullWidth
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <EmailIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-        </div>
-        <DialogActions>
-          <Button onClick={onClose} color="primary">Cancel</Button>
-          <Button disabled={this.hasError() || !this.isTouched()} onClick={() => onSubmit({ name, email })} color="primary" variant="contained">Submit</Button>
-        </DialogActions>
-      </Dialog>
+      <SnackBarContext.Consumer>
+        {(value) => (
+          <Dialog open={editOpen} onClose={this.handleClose}>
+            <DialogTitle>Edit Trainee</DialogTitle>
+            <DialogContent>
+              <DialogContentText>Enter your trainee details</DialogContentText>
+              <TextField
+                label="Name"
+                defaultValue={details.name}
+                margin="normal"
+                variant="outlined"
+                onChange={this.handleNameValue}
+                onBlur={() => this.isTouched('name')}
+                helperText={this.getError('name')}
+                error={this.isValid('name')}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                fullWidth
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Person />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <TextField
+                label="Email Address"
+                defaultValue={details.email}
+                margin="normal"
+                variant="outlined"
+                onChange={this.handleEmailValue}
+                onBlur={() => this.isTouched('email')}
+                helperText={this.getError('email')}
+                error={this.isValid('email')}
+                fullWidth
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Email />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button color="primary" onClick={onClose}>
+                Cancel
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={(event) => this.onSubmit(event, value)}
+                disabled={!this.handleButtonError()}
+              >
+                Submit
+              </Button>
+            </DialogActions>
+          </Dialog>
+        )}
+      </SnackBarContext.Consumer>
     );
   }
 }
+
 EditDialog.propTypes = {
-  open: PropTypes.bool.isRequired,
-  details: PropTypes.object.isRequired,
-  onClose: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired,
+  details: PropTypes.objectOf(PropTypes.any).isRequired,
+  onClose: PropTypes.func,
+  editOpen: PropTypes.bool,
 };
+
+EditDialog.defaultProps = {
+  onClose: () => { },
+  editOpen: false,
+};
+
 export default EditDialog;
