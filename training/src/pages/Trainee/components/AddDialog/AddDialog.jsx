@@ -12,7 +12,9 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import * as yup from 'yup';
+
 import { Div, P } from './style';
+import { SnackBarContext } from '../../../../contexts';
 
 class AddDialog extends React.Component {
   constructor() {
@@ -56,6 +58,11 @@ handleClosed = () => {
     open: false
   });
 }
+
+onSubmit = (event, value) => {
+  this.setState({open:false});
+  value('Successfully Added!', 'success');
+};
 
 getError(field) {
   const { touched } = this.state;
@@ -109,7 +116,10 @@ render() {
   const handleConfirmPassword = event => {
     this.setState( {confirmPassword: event.target.value});
   }
+
     return (
+      <SnackBarContext.Consumer>
+        {(value) => (
       <div>
         <Button variant='outlined' color='primary' onClick={this.handleClickOpen} style={{marginTop: '30px'}}>
           Add TraineeList
@@ -217,12 +227,14 @@ render() {
             <Button onClick={this.handleClosed} color='primary'>
               Cancel
             </Button>
-            <Button onClick={this.handleClosed} variant='contained' color='primary' disabled={this.hasErrors()}>
+            <Button  onClick={(event) => this.onSubmit(event, value)} variant='contained' color='primary' disabled={this.hasErrors()}>
               Submit
             </Button>
           </DialogActions>
         </Dialog>
       </div>
+      )}
+      </SnackBarContext.Consumer>
     );
   }
 }

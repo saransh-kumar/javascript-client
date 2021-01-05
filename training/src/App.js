@@ -1,5 +1,6 @@
 import React from 'react';
 import { ThemeProvider } from '@material-ui/core/styles';
+import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom'
 
 import themeStyle from './theme';
 import { Trainee } from './pages'
@@ -7,15 +8,16 @@ import { TextFieldDemo } from './pages/index';
 import { InputDemo } from '../src/pages/index';
 import { ChildrenDemo } from './pages/ChildrenDemo/index';
 import { Login } from './pages/index';
-import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom'
 import { AuthRoute, PrivateRoute } from './Routes/index';
 import { NoMatch } from './pages/NoMatch';
+import { SnackBarProvider } from './contexts/index';
 
 function App() {
  
   return (
     
     <>
+    <SnackBarProvider>
       <ThemeProvider theme={ themeStyle }>
         <Router>
           <Switch>
@@ -31,6 +33,7 @@ function App() {
           </Switch>
         </Router>
       </ThemeProvider>
+     </SnackBarProvider>
     </>
   );
 }
