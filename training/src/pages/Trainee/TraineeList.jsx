@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -89,10 +88,9 @@ class TraineeList extends Component {
       page,
       edit,
     } = this.state;
-    const { match } = this.props;
     return (
       <>
-        <div style={{ display: 'flex', justifyContent: 'end' }}>
+        <div style={{float:'right'}}>
           <AddDialog
             open={open}
             onClose={this.onCloseEvent}
@@ -115,7 +113,7 @@ class TraineeList extends Component {
             {
               field: 'createdAt',
               label: 'Date',
-              align: 'right',
+              align: 'center',
               format: getFormattedDate,
             },
           ]}
@@ -152,17 +150,6 @@ class TraineeList extends Component {
             />
           )}
         </>
-        <div>
-          {
-            trainees.map((item) => (
-              <ul key={item.id}>
-                <li>
-                  <Link to={`${match.path}/${item.id}`}>{item.name}</Link>
-                </li>
-              </ul>
-            ))
-          }
-        </div>
       </>
     );
   }

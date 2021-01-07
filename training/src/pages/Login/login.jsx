@@ -10,13 +10,18 @@ import Typography from '@material-ui/core/Typography';
 import { Email } from '@material-ui/icons';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import * as yup from 'yup';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
+import { SnackBarContext } from '../../contexts';
+import callApi from '../../lib/utils/api';
+import PropTypes from 'prop-types';
 
 class Login extends React.Component {
 
   constructor() {
     super();
     this.state = {
+      loading: false,
       touched: {
         email: false,
         password: false,
@@ -32,6 +37,7 @@ class Login extends React.Component {
       .required('password is missing')
       .min(8,'minimum 8 characters'),
   })
+
 
   getError(field) {
     const { touched } = this.state;
@@ -63,9 +69,40 @@ class Login extends React.Component {
       });
   }
 
+  submit = async (e, openSnackBar) => {
+    e.preventDefault();
+    const { history } = this.props;
+    const { email, password } = this.state;
+    await callApi('/user/login', 'POST', { email, password })
+      .then((response) => {
+        localStorage.setItem('token', response.data.data);
+        openSnackBar('Login successfully', 'Success');
+        history.push('/trainee');
+      })
+      .catch(() => {
+        this.setState({
+          email: '',
+          password: '',
+          loading: false,
+          touched: {
+            email: false,
+            password: false,
+          },
+        });
+        openSnackBar('Invalid User', 'error');
+      });
+  }
+
+  loadingHandler = () => {
+    const { loading } = this.state;
+    if (!loading) {
+      this.setState({loading: true});
+    }
+  }
+
   render() {
 
-    const { email, password } = this.state;
+    const { email, password, loading } = this.state;
 
     const handleEmailChange = (event) => {
       this.setState( { email: event.target.value }, () => {
@@ -80,7 +117,9 @@ class Login extends React.Component {
     }
 
     return (
-      <Container component="main" maxWidth="xs" >
+      <SnackBarContext.Consumer>
+      {(value) => (
+        <Container component="main" maxWidth="xs" >
         <CssBaseline />
         <Box boxShadow={3} maxWidth="lg" p={2} mt={15}>
           <Avatar style={{backgroundColor:'red', margin:'auto' }} >
@@ -89,7 +128,7 @@ class Login extends React.Component {
           <Typography component="h1" variant="h5" align="center" style={{ marginBottom: '30px'}}> 
             Login
           </Typography>
-          <form  noValidate>
+          <form onSubmit={(event) => this.submit(event, value)}>
             <TextField
               value={ email }
               error={ this.getError('email') }
@@ -139,16 +178,25 @@ class Login extends React.Component {
               fullWidth
               variant="contained"
               color="primary"
-              disabled={this.hasErrors()}
+              disabled={ this.hasErrors() }
               style={{ marginTop: '20px'}}
-            >
+              type='submit'
+              onClick={ this.loadingHandler }
+              >
               Sign In
+              {loading && (<CircularProgress size={21} color="secondary"/>)}
             </Button>
           </form>
         </Box>
       </Container>
+      )}
+    </SnackBarContext.Consumer>
     );
   }
 }
+
+Login.propTypes = {
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
+};
 
 export default Login;
