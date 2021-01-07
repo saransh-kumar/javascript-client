@@ -21,8 +21,8 @@ function App() {
       <ThemeProvider theme={ themeStyle }>
         <Router>
           <Switch>
-            <Route exact path="/" component={ Trainee }>
-              <Redirect to="/Trainee" />
+            <Route exact path="/" component={ Login }>
+              <Redirect to="/login" />
             </Route>
             <AuthRoute path="/login" component={ Login } />
             <PrivateRoute path="/ChildrenDemo" component={ ChildrenDemo } />

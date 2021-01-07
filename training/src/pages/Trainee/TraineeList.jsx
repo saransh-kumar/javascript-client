@@ -113,7 +113,7 @@ class TraineeList extends Component {
             {
               field: 'createdAt',
               label: 'Date',
-              align: 'center',
+              align: 'right',
               format: getFormattedDate,
             },
           ]}
