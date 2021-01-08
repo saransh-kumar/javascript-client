@@ -28,6 +28,7 @@ class AddDialog extends React.Component {
             confirmPassword: false,
         },
     };
+    this.baseState=this.state;
   }
 
 schema = yup.object().shape({
@@ -54,13 +55,11 @@ handleClickOpen = () => {
 }
 
 handleClosed = () => {
-  this.setState({
-    open: false
-  });
+  this.setState(this.baseState);
 }
 
 onSubmit = (event, value) => {
-  this.setState({open:false});
+  this.setState(this.baseState);
   value('Successfully Added!', 'success');
 };
 
@@ -121,7 +120,7 @@ render() {
       <SnackBarContext.Consumer>
         {(value) => (
       <div>
-        <Button variant='outlined' color='primary' onClick={this.handleClickOpen} style={{marginTop: '30px'}}>
+        <Button variant='outlined' color='primary' onClick={this.handleClickOpen} style={{marginTop: '20px', marginBottom: '20px'}}>
           Add TraineeList
         </Button>
         <Dialog

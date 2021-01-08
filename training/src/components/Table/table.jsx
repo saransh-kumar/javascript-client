@@ -33,14 +33,14 @@ export default function MyTable(props) {
   };
 
   return (
-    <TableContainer component={Paper}>
-      <Table aria-label="simple table">
+    <TableContainer component={Paper} style={{border: 'solid #c0c0c0 1px'}}>
+      <Table aria-label="simple table" >
         <TableHead>
           <TableRow>
             {
               column.map((item) => (
                 <>
-                  <TableCell key={`${item.label}`} align={item.align}>
+                  <TableCell key={`${item.label}`} align={item.align} style={{borderBottom: 'solid #c0c0c0 1px'}}>
                     <TableSortLabel
                       active={orderBy === item.field}
                       direction={order}
