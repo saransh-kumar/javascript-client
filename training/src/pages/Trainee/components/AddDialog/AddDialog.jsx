@@ -50,7 +50,7 @@ schema = yup.object().shape({
       .matches(/(?=.*[@#$%^&+=])/, 'should have atleast one special character')
       .min(8,'minimum 8 characters'),
     confirmPassword: yup.string()
-      .required('confirm password required')
+      .required('confirm password missing')
       .oneOf([yup.ref('password')], 'passwords do not match'),
 });
 
@@ -243,7 +243,7 @@ render() {
                       }}
                   />
               </div>
-                <Div><P>{this.getError('confirmPassword')}</P></Div>
+                <Div><P primary>{this.getError('confirmPassword')}</P></Div>
             </div>
             </Box>
           </DialogContent>
