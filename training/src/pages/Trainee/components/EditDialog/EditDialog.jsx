@@ -112,13 +112,14 @@ class EditDialog extends Component {
 
   onSubmit = async (e, value) => {
     e.preventDefault();
-    const { onClose, details } = this.props;
+    const { onClose, details, renderTrainee } = this.props;
     const { name, email } = this.state;
     const originalId = details.originalId;
     await callApi(`/trainee`, 'PUT', { originalId, name, email })
       .then(()  => {
         this.onConsole();
         value('Successfully Edited!', 'success');
+        renderTrainee();
         onClose();
       })
       .catch(() => {
@@ -204,6 +205,7 @@ EditDialog.propTypes = {
   onClose: PropTypes.func,
   editOpen: PropTypes.bool,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
+  renderTrainee: PropTypes.func.isRequired,
 };
 
 EditDialog.defaultProps = {

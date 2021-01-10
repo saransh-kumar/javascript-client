@@ -20,16 +20,16 @@ class DeleteDialog extends Component {
 
   handleDeleteClose = async (event, value) => {
     event.preventDefault();
-    const { details, onClose } = this.props;
+    const { details, onClose, renderTrainee } = this.props;
     const originalDate = new Date(details.createdAt);
     const dateCheck = new Date('2019-02-14');
     const originalId = details.originalId;
     await callApi('/trainee', 'DELETE', {originalId})
       .then(() => {
         if (originalDate > dateCheck) {
-          // eslint-disable-next-line no-console
           console.log('Deleted Item', details);
           value('Successfully Deleted!', 'success');
+          renderTrainee();
         } else {
           value("Can't Delete!", 'error');
         }
@@ -75,6 +75,7 @@ DeleteDialog.propTypes = {
   details: PropTypes.objectOf(PropTypes.any).isRequired,
   onClose: PropTypes.func,
   deleteOpen: PropTypes.bool,
+  renderTrainee: PropTypes.func.isRequired,
 };
 
 DeleteDialog.defaultProps = {

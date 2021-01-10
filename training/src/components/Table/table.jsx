@@ -38,6 +38,7 @@ export default function Tables(props) {
                     <TableSortLabel
                       active={orderBy === item.field}
                       direction={order}
+                      style={{marginRight: '20%'}}
                     >
                       {item.label}
                     </TableSortLabel>
@@ -53,11 +54,11 @@ export default function Tables(props) {
               {
                 column.map((item) => (
                   <>
-                    <TableCell key={`${trainees[id]}${item.field}`} align={item.align}>
+                    <TableCell key={`${trainees[id]}${item.field}`} align={item.align} >
                       {item.format ? item.format(trainees[item.field]) : trainees[item.field] }
                       {item.label === 'Date' ? actions.map((action) => (
                         <>
-                          <Button variant="text" onClick={() => action.handler(trainees)} >
+                          <Button variant="text" onClick={() => action.handler(trainees)}>
                             {action.icon}
                           </Button>
                         </>

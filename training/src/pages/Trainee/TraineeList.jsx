@@ -85,7 +85,7 @@ class TraineeList extends Component {
     this.setState({ sortedBy: field, order: tabOrder, sortedOrder: sequence });
   }
   
-  handlePageChange = (event, page) => {
+  handlePageChange = (page) => {
     this.setState({ page });
   }
 
@@ -105,6 +105,7 @@ class TraineeList extends Component {
     await callApi(`/trainee?limit=${limit}&skip=${skip}&sortedBy=${sortedBy}&sortedOrder=${sortedOrder}`, 'GET')
       .then((response) => {
         this.setState({ database: response.data.data.records });
+        console.log('Response',response);
         this.state.database === [] ? console.log('OOPS!, No More Trainees') : console.log('');
       })
       .catch(() => {
@@ -121,6 +122,7 @@ class TraineeList extends Component {
             open={open}
             onClose={this.onCloseEvent}
             onSubmit={this.handleSubmit}
+            renderTrainee={this.renderData}
           />
         </div>
         {
@@ -174,6 +176,7 @@ class TraineeList extends Component {
               editOpen={edit}
               onClose={this.editDialogClose}
               details={traineeInfo}
+              renderTrainee={this.renderData}
             />
           )}
           { deleteDialog && (
@@ -181,6 +184,7 @@ class TraineeList extends Component {
               deleteOpen={deleteDialog}
               onClose={this.deleteDialogClose}
               details={traineeInfo}
+              renderTrainee={this.renderData}
             />
           )}
         </>
