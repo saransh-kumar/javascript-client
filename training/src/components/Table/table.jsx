@@ -26,17 +26,6 @@ export default function Tables(props) {
   const {
     id, data, column, order, orderBy, count, page, onPageChange, rowsPerPage, actions,
   } = props;
-
-  // const handleSort = (field) => () => {
-  //   const { onSort } = props;
-  //   onSort(field);
-  // };
-
-  // const handleSelect = (id) => () => {
-  //   const { onSelect } = this.props;
-  //   onSelect(id);
-  // }
-
   return (
     <TableContainer component={Paper} style={{border: 'solid #c0c0c0 1px'}}>
       <Table aria-label="simple table" >

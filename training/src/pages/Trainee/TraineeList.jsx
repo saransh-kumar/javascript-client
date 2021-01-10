@@ -5,7 +5,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { AddDialog, EditDialog, DeleteDialog } from './components';
-import trainees from './data/trainee';
 import { Tables } from '../../components/index';
 import { getFormattedDate } from '../../lib/utils/getFormattedDate';
 import callApi from '../../lib/utils/api';
@@ -114,7 +113,7 @@ class TraineeList extends Component {
   }
 
   render() {
-    const { open, deleteDialog, order, sortedBy, page, edit, database, loading } = this.state;
+    const { open, deleteDialog, order, sortedBy, page, edit, database, loading, traineeInfo } = this.state;
     return (
       <>
         <div style={{float:'right'}}>
@@ -174,14 +173,14 @@ class TraineeList extends Component {
             <EditDialog
               editOpen={edit}
               onClose={this.editDialogClose}
-              details={trainees}
+              details={traineeInfo}
             />
           )}
           { deleteDialog && (
             <DeleteDialog
               deleteOpen={deleteDialog}
               onClose={this.deleteDialogClose}
-              details={trainees}
+              details={traineeInfo}
             />
           )}
         </>

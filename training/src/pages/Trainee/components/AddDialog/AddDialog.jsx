@@ -73,6 +73,7 @@ handleClosed = () => {
 
 onSubmit = async (event, openSnackBar) => {
   event.preventDefault();
+  
   const { name, email, password, confirmPassword } = this.state;
   this.setState({loading: true});
   await callApi('/trainee', 'POST', { name, email, password, confirmPassword })
