@@ -12,7 +12,7 @@ function CustomizedSnackbars(props) {
 
   return (
     <div>
-      <Snackbar open={open} onClose={onClose} autoHideDuration={4000}>
+      <Snackbar open={open} onClose={onClose} autoHideDuration={2000}>
         <MuiAlert
           elevation={6}
           variant="filled"
