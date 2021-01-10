@@ -26,8 +26,8 @@ class InputDemo extends Component {
     schema = yup.object().shape({
         name: yup.string().required('name is a required field').min(3),
         sports: yup.string().required('sport is a required field'),
-        cricket: yup.string().when('sports', { is: 'cricket', then: yup.string().required('What you do is a required field') }),
-        football: yup.string().when('sports', { is: 'football', then: yup.string().required('What you do is a required field') }),
+        cricket: yup.string().when('sports', { is: 'Cricket', then: yup.string().required('What you do is a required field') }),
+        football: yup.string().when('sports', { is: 'Football', then: yup.string().required('What you do is a required field') }),
     });
 
     sportsState() {
@@ -118,46 +118,36 @@ class InputDemo extends Component {
                     options={ constants.sport }
                 />
             </Div>
-                {/* {
-                    sports === '' ? <p></p> : (
-                        <>
+            {
+                sports === constants.cricket ? (
+                    <>
                         <Div><p><b>What you do?</b></p></Div>
                         <Div>
                             <RadioGroup
-                                value= { sports === constants.cricket ? cricket : football }
-                                error={ sports === constants.cricket ? this.getError(constants.crick) : this.getError(constants.foot) }
-                                onChange={ sports === constants.cricket ? handleCricketChange : handleFootballChange }
-                                onBlur={ () => { this.isTouched('sports')} }
-                                options={ sports === constants.cricket ? constants.cricketRole : constants.footballRole }
+                                value= { cricket }
+                                error={ this.getError('cricket') }
+                                onChange={ handleCricketChange }
+                                onBlur={ () => { this.isTouched('cricket')} }
+                                options={ constants.cricketRole }
                             />
                         </Div>
                     </>
-                    )
-                } */}
-            {
-                sports === constants.cricket ? (
-                    <Div>
-                        <RadioGroup
-                            value= { cricket }
-                            error={ this.getError(constants.crick) }
-                            onChange={ handleCricketChange }
-                            options={ constants.cricketRole }
-                            onBlur={ () => { this.isTouched('cricket')} }
-                        />
-                    </Div>
                 ) : (<p></p>)
             }
             {
                 sports === constants.football ? (
-                    <Div>
-                        <RadioGroup
-                            value= { football }
-                            error={this.getError(constants.foot)}
-                            onChange={ handleFootballChange }
-                            options={ constants.footballRole }
-                            onBlur={ () => { this.isTouched('football')} }
-                        />
-                    </Div>
+                    <>
+                        <Div><p><b>What you do?</b></p></Div>
+                        <Div>
+                            <RadioGroup
+                                value= { football }
+                                error={ this.getError('football') }
+                                onChange={ handleFootballChange }
+                                onBlur={ () => { this.isTouched('football')} }
+                                options={ constants.footballRole }
+                            />
+                        </Div>
+                    </>
                 ) : (<p></p>)
             }
             <Div primary>
