@@ -2,10 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 import { AddDialog, EditDialog, DeleteDialog } from './components';
 import trainees from './data/trainee';
 import { Tables } from '../../components/index';
 import { getFormattedDate } from '../../lib/utils/getFormattedDate';
+import callApi from '../../lib/utils/api';
 
 const asend = 'asc';
 const dsend = 'desc';
@@ -14,13 +17,24 @@ class TraineeList extends Component {
     super();
     this.state = {
       open: false,
-      orderBy: '',
-      order: asend,
+      sortedBy: 'createdAt',
+      order: dsend,
+      sortedOrder: -1,
       page: 0,
       edit: false,
       deleteDialog: false,
+      skip: 0,
+      limit: 20,
       traineeInfo: {},
+      database: [],
+      loader: false,
     };
+  }
+
+  componentDidMount() {
+    this.setState({ loader: true});
+    this.renderData();
+    this.setState({ loader: false});
   }
 
   onOpen = () => {
@@ -63,12 +77,13 @@ class TraineeList extends Component {
   }
 
   handleSort = (field) => {
-    const { order, orderBy } = this.state;
-    let tabOrder = asend;
-    if (orderBy === field && order === asend) {
+    const { order, sortedBy } = this.state;
+    let tabOrder = asend, sequence = -1;
+    if (sortedBy === field && order === asend) {
       tabOrder = dsend;
+      sequence = 1;
     }
-    this.setState({ orderBy: field, order: tabOrder });
+    this.setState({ sortedBy: field, order: tabOrder, sortedOrder: sequence });
   }
   
   handlePageChange = (event, page) => {
@@ -79,15 +94,27 @@ class TraineeList extends Component {
     this.setState({ open: false });
   }
 
+  handleSelect = (id) => {
+    const { match, history } = this.props;
+    return (
+      history.push(`${match.path}/${id}`)
+    );
+  }
+
+  renderData = async() => {
+    const { limit, skip, sortedBy, sortedOrder } = this.state;
+    await callApi(`/trainee?limit=${limit}&skip=${skip}&sortedBy=${sortedBy}&sortedOrder=${sortedOrder}`, 'GET')
+      .then((response) => {
+        this.setState({ database: response.data.data.records });
+        this.state.database === [] ? console.log('OOPS!, No More Trainees') : console.log('');
+      })
+      .catch(() => {
+        console.log('there is an errror');
+      })
+  }
+
   render() {
-    const {
-      open,
-      deleteDialog,
-      order,
-      orderBy,
-      page,
-      edit,
-    } = this.state;
+    const { open, deleteDialog, order, sortedBy, page, edit, database, loading } = this.state;
     return (
       <>
         <div style={{float:'right'}}>
@@ -97,43 +124,51 @@ class TraineeList extends Component {
             onSubmit={this.handleSubmit}
           />
         </div>
-        <Tables
-          id="id"
-          data={trainees}
-          column={[
-            {
-              field: 'name',
-              label: 'Name',
-            },
-            {
-              field: 'email',
-              label: 'Email Address',
-              format: (value) => value && value.toUpperCase(),
-            },
-            {
-              field: 'createdAt',
-              label: 'Date',
-              align: 'right',
-              format: getFormattedDate,
-            },
-          ]}
-          actions={[
-            {
-              icon: <EditIcon />,
-              handler: this.editDialogOpen,
-            },
-            {
-              icon: <DeleteIcon />,
-              handler: this.deleteDialogOpen,
-            },
-          ]}
-          orderBy={orderBy}
-          order={order}
-          onSort={this.handleSort}
-          count={100}
-          page={page}
-          onPageChange={this.handlePageChange}
-        />
+        {
+          loading ? (
+            <CircularProgress size={150} color="secondary" style={{marginLeft: '43%',marginTop:'20%'}}/>
+          ) :
+          (
+          <Tables
+            id="id"
+            data={database}
+            column={[
+              {
+                field: 'name',
+                label: 'Name',
+              },
+              {
+                field: 'email',
+                label: 'Email Address',
+                format: (value) => value && value.toUpperCase(),
+              },
+              {
+                field: 'createdAt',
+                label: 'Date',
+                align: 'right',
+                format: getFormattedDate,
+              },
+            ]}
+            actions={[
+              {
+                icon: <EditIcon />,
+                handler: this.editDialogOpen,
+              },
+              {
+                icon: <DeleteIcon />,
+                handler: this.deleteDialogOpen,
+              },
+            ]}
+            sortedBy={sortedBy}
+            order={order}
+            onSort={this.handleSort}
+            count={100}
+            page={page}
+            onPageChange={this.handlePageChange}
+            onSelect={this.handleSelect}
+          />
+          )
+        }
         <>
           { edit && (
             <EditDialog
@@ -156,5 +191,6 @@ class TraineeList extends Component {
 }
 TraineeList.propTypes = {
   match: PropTypes.objectOf(PropTypes.any).isRequired,
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 export default TraineeList;

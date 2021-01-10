@@ -22,21 +22,26 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-export default function MyTable(props) {
+export default function Tables(props) {
   const {
     id, data, column, order, orderBy, count, page, onPageChange, rowsPerPage, actions,
   } = props;
 
-  const handleSort = (field) => () => {
-    const { onSort } = props;
-    onSort(field);
-  };
+  // const handleSort = (field) => () => {
+  //   const { onSort } = props;
+  //   onSort(field);
+  // };
+
+  // const handleSelect = (id) => () => {
+  //   const { onSelect } = this.props;
+  //   onSelect(id);
+  // }
 
   return (
     <TableContainer component={Paper} style={{border: 'solid #c0c0c0 1px'}}>
       <Table aria-label="simple table" >
-        <TableHead>
-          <TableRow>
+        <TableHead >
+          <TableRow style={{marginLeft: '20%'}}>
             {
               column.map((item) => (
                 <>
@@ -44,7 +49,6 @@ export default function MyTable(props) {
                     <TableSortLabel
                       active={orderBy === item.field}
                       direction={order}
-                      onClick={handleSort(item.field)}
                     >
                       {item.label}
                     </TableSortLabel>
@@ -64,7 +68,7 @@ export default function MyTable(props) {
                       {item.format ? item.format(trainees[item.field]) : trainees[item.field] }
                       {item.label === 'Date' ? actions.map((action) => (
                         <>
-                          <Button variant="text" onClick={() => action.handler(trainees)}>
+                          <Button variant="text" onClick={() => action.handler(trainees)} >
                             {action.icon}
                           </Button>
                         </>
@@ -90,7 +94,7 @@ export default function MyTable(props) {
     </TableContainer>
   );
 }
-MyTable.propTypes = {
+Tables.propTypes = {
   id: PropTypes.string.isRequired,
   column: PropTypes.arrayOf(Object).isRequired,
   data: PropTypes.arrayOf(Object).isRequired,
@@ -102,8 +106,9 @@ MyTable.propTypes = {
   count: PropTypes.number,
   page: PropTypes.number,
   actions: PropTypes.arrayOf(PropTypes.any),
+  onSelect: PropTypes.func,
 };
-MyTable.defaultProps = {
+Tables.defaultProps = {
   order: '',
   orderBy: '',
   onSort: () => {},
