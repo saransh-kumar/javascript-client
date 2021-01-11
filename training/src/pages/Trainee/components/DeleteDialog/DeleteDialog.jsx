@@ -14,8 +14,8 @@ import callApi from '../../../../lib/utils/api';
 
 class DeleteDialog extends Component {
   constructor(props) {
-    super(props);
-    this.state = {};
+  super(props);
+  this.state = {};
   }
 
   handleDeleteClose = async (event, value) => {

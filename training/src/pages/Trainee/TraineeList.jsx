@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { AddDialog, EditDialog, DeleteDialog } from './components';
 import { Tables } from '../../components/index';
@@ -24,9 +23,9 @@ class TraineeList extends Component {
       deleteDialog: false,
       skip: 0,
       limit: 20,
+      loader: false,
       traineeInfo: {},
       database: [],
-      loader: false,
       count: 0,
     };
   }
@@ -112,7 +111,6 @@ class TraineeList extends Component {
         this.setState({ database: response.data.data.records, count: response.data.data.totalCount });
         console.log('Response',response);
         this.setState({ loader: false});
-        this.state.database === [] ? console.log('OOPS!, No More Trainees') : console.log('');
       })
       .catch(() => {
         console.log('there is an errror');
@@ -132,9 +130,6 @@ class TraineeList extends Component {
           />
         </div>
         {
-          loader ? (
-            <CircularProgress size={150} color="secondary" style={{marginLeft: '43%',marginTop:'20%'}}/>
-          ) :
           (
           <Tables
             id="id"
@@ -174,6 +169,8 @@ class TraineeList extends Component {
             rowsPerPage={limit}
             onPageChange={this.handlePageChange}
             onSelect={this.handleSelect}
+            loader={loader}
+            dataCount={count}
           />
           )
         }

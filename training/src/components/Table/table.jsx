@@ -14,6 +14,8 @@ import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 
+import {withLoaderAndMessage} from '../HOC';
+
 const StyledTableRow = withStyles((theme) => ({
   root: {
     '&:nth-of-type(odd)': {
@@ -22,7 +24,7 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-export default function Tables(props) {
+function Tables(props) {
   const {
     id, data, column, order, orderBy, count, page, onPageChange, rowsPerPage, actions,
   } = props;
@@ -108,3 +110,5 @@ Tables.defaultProps = {
   page: 1,
   actions: [],
 };
+
+export default withLoaderAndMessage(Tables);
