@@ -27,13 +27,13 @@ class TraineeList extends Component {
       traineeInfo: {},
       database: [],
       loader: false,
+      count: 0,
     };
   }
 
   componentDidMount() {
     this.setState({ loader: true});
     this.renderData();
-    this.setState({ loader: false});
   }
 
   onOpen = () => {
@@ -85,8 +85,13 @@ class TraineeList extends Component {
     this.setState({ sortedBy: field, order: tabOrder, sortedOrder: sequence });
   }
   
-  handlePageChange = (page) => {
-    this.setState({ page });
+  handlePageChange = (newPage, value) => {
+    console.log('New Page ',newPage,'Value ', value);
+    this.setState({ page: value, skip: value*20}, () => {
+      this.renderData();
+      console.log('Skip ',this.state.skip);
+    });
+    
   }
 
   handleSubmit = () => {
@@ -104,8 +109,9 @@ class TraineeList extends Component {
     const { limit, skip, sortedBy, sortedOrder } = this.state;
     await callApi(`/trainee?limit=${limit}&skip=${skip}&sortedBy=${sortedBy}&sortedOrder=${sortedOrder}`, 'GET')
       .then((response) => {
-        this.setState({ database: response.data.data.records });
+        this.setState({ database: response.data.data.records, count: response.data.data.totalCount });
         console.log('Response',response);
+        this.setState({ loader: false});
         this.state.database === [] ? console.log('OOPS!, No More Trainees') : console.log('');
       })
       .catch(() => {
@@ -114,7 +120,7 @@ class TraineeList extends Component {
   }
 
   render() {
-    const { open, deleteDialog, order, sortedBy, page, edit, database, loading, traineeInfo } = this.state;
+    const { open, deleteDialog, order, sortedBy, page, edit, database, loader, traineeInfo, limit, count } = this.state;
     return (
       <>
         <div style={{float:'right'}}>
@@ -126,7 +132,7 @@ class TraineeList extends Component {
           />
         </div>
         {
-          loading ? (
+          loader ? (
             <CircularProgress size={150} color="secondary" style={{marginLeft: '43%',marginTop:'20%'}}/>
           ) :
           (
@@ -163,8 +169,9 @@ class TraineeList extends Component {
             sortedBy={sortedBy}
             order={order}
             onSort={this.handleSort}
-            count={100}
+            count={count}
             page={page}
+            rowsPerPage={limit}
             onPageChange={this.handlePageChange}
             onSelect={this.handleSelect}
           />
