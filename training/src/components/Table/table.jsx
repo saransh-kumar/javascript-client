@@ -14,6 +14,8 @@ import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 
+import {withLoaderAndMessage} from '../HOC';
+
 const StyledTableRow = withStyles((theme) => ({
   root: {
     '&:nth-of-type(odd)': {
@@ -22,21 +24,10 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-export default function Tables(props) {
+function Tables(props) {
   const {
     id, data, column, order, orderBy, count, page, onPageChange, rowsPerPage, actions,
   } = props;
-
-  // const handleSort = (field) => () => {
-  //   const { onSort } = props;
-  //   onSort(field);
-  // };
-
-  // const handleSelect = (id) => () => {
-  //   const { onSelect } = this.props;
-  //   onSelect(id);
-  // }
-
   return (
     <TableContainer component={Paper} style={{border: 'solid #c0c0c0 1px'}}>
       <Table aria-label="simple table" >
@@ -49,6 +40,7 @@ export default function Tables(props) {
                     <TableSortLabel
                       active={orderBy === item.field}
                       direction={order}
+                      style={{marginRight: '20%'}}
                     >
                       {item.label}
                     </TableSortLabel>
@@ -64,11 +56,11 @@ export default function Tables(props) {
               {
                 column.map((item) => (
                   <>
-                    <TableCell key={`${trainees[id]}${item.field}`} align={item.align}>
+                    <TableCell key={`${trainees[id]}${item.field}`} align={item.align} >
                       {item.format ? item.format(trainees[item.field]) : trainees[item.field] }
                       {item.label === 'Date' ? actions.map((action) => (
                         <>
-                          <Button variant="text" onClick={() => action.handler(trainees)} >
+                          <Button variant="text" onClick={() => action.handler(trainees)}>
                             {action.icon}
                           </Button>
                         </>
@@ -118,3 +110,5 @@ Tables.defaultProps = {
   page: 1,
   actions: [],
 };
+
+export default withLoaderAndMessage(Tables);

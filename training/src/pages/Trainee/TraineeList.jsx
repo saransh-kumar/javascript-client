@@ -2,10 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { AddDialog, EditDialog, DeleteDialog } from './components';
-import trainees from './data/trainee';
 import { Tables } from '../../components/index';
 import { getFormattedDate } from '../../lib/utils/getFormattedDate';
 import callApi from '../../lib/utils/api';
@@ -25,16 +23,16 @@ class TraineeList extends Component {
       deleteDialog: false,
       skip: 0,
       limit: 20,
+      loader: false,
       traineeInfo: {},
       database: [],
-      loader: false,
+      count: 0,
     };
   }
 
   componentDidMount() {
     this.setState({ loader: true});
     this.renderData();
-    this.setState({ loader: false});
   }
 
   onOpen = () => {
@@ -86,8 +84,13 @@ class TraineeList extends Component {
     this.setState({ sortedBy: field, order: tabOrder, sortedOrder: sequence });
   }
   
-  handlePageChange = (event, page) => {
-    this.setState({ page });
+  handlePageChange = (newPage, value) => {
+    console.log('New Page ',newPage,'Value ', value);
+    this.setState({ page: value, skip: value*20}, () => {
+      this.renderData();
+      console.log('Skip ',this.state.skip);
+    });
+    
   }
 
   handleSubmit = () => {
@@ -105,8 +108,9 @@ class TraineeList extends Component {
     const { limit, skip, sortedBy, sortedOrder } = this.state;
     await callApi(`/trainee?limit=${limit}&skip=${skip}&sortedBy=${sortedBy}&sortedOrder=${sortedOrder}`, 'GET')
       .then((response) => {
-        this.setState({ database: response.data.data.records });
-        this.state.database === [] ? console.log('OOPS!, No More Trainees') : console.log('');
+        this.setState({ database: response.data.data.records, count: response.data.data.totalCount });
+        console.log('Response',response);
+        this.setState({ loader: false});
       })
       .catch(() => {
         console.log('there is an errror');
@@ -114,7 +118,7 @@ class TraineeList extends Component {
   }
 
   render() {
-    const { open, deleteDialog, order, sortedBy, page, edit, database, loading } = this.state;
+    const { open, deleteDialog, order, sortedBy, page, edit, database, loader, traineeInfo, limit, count } = this.state;
     return (
       <>
         <div style={{float:'right'}}>
@@ -122,12 +126,10 @@ class TraineeList extends Component {
             open={open}
             onClose={this.onCloseEvent}
             onSubmit={this.handleSubmit}
+            renderTrainee={this.renderData}
           />
         </div>
         {
-          loading ? (
-            <CircularProgress size={150} color="secondary" style={{marginLeft: '43%',marginTop:'20%'}}/>
-          ) :
           (
           <Tables
             id="id"
@@ -162,10 +164,13 @@ class TraineeList extends Component {
             sortedBy={sortedBy}
             order={order}
             onSort={this.handleSort}
-            count={100}
+            count={count}
             page={page}
+            rowsPerPage={limit}
             onPageChange={this.handlePageChange}
             onSelect={this.handleSelect}
+            loader={loader}
+            dataCount={count}
           />
           )
         }
@@ -174,14 +179,16 @@ class TraineeList extends Component {
             <EditDialog
               editOpen={edit}
               onClose={this.editDialogClose}
-              details={trainees}
+              details={traineeInfo}
+              renderTrainee={this.renderData}
             />
           )}
           { deleteDialog && (
             <DeleteDialog
               deleteOpen={deleteDialog}
               onClose={this.deleteDialogClose}
-              details={trainees}
+              details={traineeInfo}
+              renderTrainee={this.renderData}
             />
           )}
         </>
