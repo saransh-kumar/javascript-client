@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PureComponent} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -11,12 +11,13 @@ import { Email } from '@material-ui/icons';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import * as yup from 'yup';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { withRouter } from "react-router-dom";
 
 import { SnackBarContext } from '../../contexts';
-import callApi from '../../lib/utils/api';
+// import callApi from '../../lib/utils/api';
 import PropTypes from 'prop-types';
 
-class Login extends React.Component {
+class Login extends PureComponent {
 
   constructor() {
     super();
@@ -71,11 +72,12 @@ class Login extends React.Component {
 
   submit = async (e, openSnackBar) => {
     e.preventDefault();
-    const { history } = this.props;
+    const { history, loginUser } = this.props;
     const { email, password } = this.state;
-    await callApi('/user/login', 'POST', { email, password })
+    // await callApi('/user/login', 'POST', { email, password })
+    await loginUser({ variables: { email, password } })
       .then((response) => {
-        localStorage.setItem('token', response.data.data);
+        localStorage.setItem('token', response.data.loginUser);
         openSnackBar('Login successfully', 'Success');
         history.push('/trainee');
       })
@@ -197,6 +199,7 @@ class Login extends React.Component {
 
 Login.propTypes = {
   history: PropTypes.objectOf(PropTypes.any).isRequired,
+  loginUser: PropTypes.objectOf(PropTypes.any).isRequired
 };
 
-export default Login;
+export default withRouter(Login);

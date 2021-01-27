@@ -22,7 +22,7 @@ class TraineeList extends Component {
       edit: false,
       deleteDialog: false,
       skip: 0,
-      limit: 20,
+      limit: 10,
       loader: false,
       traineeInfo: {},
       database: [],
@@ -86,9 +86,11 @@ class TraineeList extends Component {
   
   handlePageChange = (newPage, value) => {
     console.log('New Page ',newPage,'Value ', value);
-    this.setState({ page: value, skip: value*20}, () => {
+    this.setState({ page: value, skip: value*10}, () => {
       this.renderData();
       console.log('Skip ',this.state.skip);
+      console.log('Page', this.state.page);
+      console.log('Count', this.state.count);
     });
     
   }

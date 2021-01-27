@@ -1,6 +1,7 @@
 import React from 'react';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom'
+import { ApolloProvider } from '@apollo/react-components';
 
 import themeStyle from './theme';
 import { Trainee } from './pages'
@@ -11,6 +12,7 @@ import { Login } from './pages/index';
 import { AuthRoute, PrivateRoute } from './Routes/index';
 import { NoMatch } from './pages/NoMatch';
 import { SnackBarProvider } from './contexts/index';
+import apolloClient from './lib/apollo-client';
 
 function App() {
  
@@ -18,6 +20,7 @@ function App() {
     
     <>
     <SnackBarProvider>
+    <ApolloProvider client={ apolloClient }>
       <ThemeProvider theme={ themeStyle }>
         <Router>
           <Switch>
@@ -33,6 +36,7 @@ function App() {
           </Switch>
         </Router>
       </ThemeProvider>
+      </ApolloProvider>
      </SnackBarProvider>
     </>
   );
