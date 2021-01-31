@@ -24,6 +24,7 @@ class EditDialog extends Component {
 
   constructor(props) {
     super(props);
+    console.log('inside constructor');
     this.state = {
       name: this.props.details.name,
       email: this.props.details.email,

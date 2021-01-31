@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { graphql } from '@apollo/react-hoc';
 
 import { AddDialog, EditDialog, DeleteDialog } from './components';
 import { Tables } from '../../components/index';
 import { getFormattedDate } from '../../lib/utils/getFormattedDate';
-import callApi from '../../lib/utils/api';
+import { GET } from './query';
 
 const asend = 'asc';
 const dsend = 'desc';
@@ -22,7 +23,7 @@ class TraineeList extends Component {
       edit: false,
       deleteDialog: false,
       skip: 0,
-      limit: 20,
+      limit: 10,
       loader: false,
       traineeInfo: {},
       database: [],
@@ -32,7 +33,7 @@ class TraineeList extends Component {
 
   componentDidMount() {
     this.setState({ loader: true});
-    this.renderData();
+    // this.renderData();
   }
 
   onOpen = () => {
@@ -84,13 +85,10 @@ class TraineeList extends Component {
     this.setState({ sortedBy: field, order: tabOrder, sortedOrder: sequence });
   }
   
-  handlePageChange = (newPage, value) => {
-    console.log('New Page ',newPage,'Value ', value);
-    this.setState({ page: value, skip: value*20}, () => {
-      this.renderData();
-      console.log('Skip ',this.state.skip);
+  handlePageChange = (refetch) => (event, page) => {
+    this.setState({ page }, () => {
+      refetch({ skip: String(page * 10), limit: String(10) });
     });
-    
   }
 
   handleSubmit = () => {
@@ -104,21 +102,24 @@ class TraineeList extends Component {
     );
   }
 
-  renderData = async() => {
-    const { limit, skip, sortedBy, sortedOrder } = this.state;
-    await callApi(`/trainee?limit=${limit}&skip=${skip}&sortedBy=${sortedBy}&sortedOrder=${sortedOrder}`, 'GET')
-      .then((response) => {
-        this.setState({ database: response.data.data.records, count: response.data.data.totalCount });
-        console.log('Response',response);
-        this.setState({ loader: false});
-      })
-      .catch(() => {
-        console.log('there is an errror');
-      })
+  renderData = () => {
   }
 
   render() {
-    const { open, deleteDialog, order, sortedBy, page, edit, database, loader, traineeInfo, limit, count } = this.state;
+    const {
+      data: {
+      getAllTrainees: { records = [], totalCount = 0 } = {},
+      refetch
+      },
+    } = this.props;
+    if (records) {
+      setTimeout(() => {
+        this.setState({ loader: false});
+      }, 500);
+    } else {
+      this.setState({ loader: true});
+    }
+    const { open, deleteDialog, order, sortedBy, page, edit, loader, traineeInfo, limit } = this.state;
     return (
       <>
         <div style={{float:'right'}}>
@@ -133,7 +134,7 @@ class TraineeList extends Component {
           (
           <Tables
             id="id"
-            data={database}
+            data={records}
             column={[
               {
                 field: 'name',
@@ -164,13 +165,13 @@ class TraineeList extends Component {
             sortedBy={sortedBy}
             order={order}
             onSort={this.handleSort}
-            count={count}
+            count={totalCount}
             page={page}
             rowsPerPage={limit}
-            onPageChange={this.handlePageChange}
+            onPageChange={this.handlePageChange(refetch)}
             onSelect={this.handleSelect}
             loader={loader}
-            dataCount={count}
+            dataCount={totalCount}
           />
           )
         }
@@ -196,8 +197,15 @@ class TraineeList extends Component {
     );
   }
 }
+
 TraineeList.propTypes = {
   match: PropTypes.objectOf(PropTypes.any).isRequired,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
+  data: PropTypes.isRequired,
 };
-export default TraineeList;
+
+export default graphql(GET,
+  {
+  options: { variables: { skip: '0', limit: '10', sortedBy: 'name', sortedOrder: '1' } },
+  })(TraineeList);
+  
