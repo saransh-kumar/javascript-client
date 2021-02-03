@@ -7,7 +7,7 @@ export default function withLoaderAndMessage(WrappedComponent) {
             const {loader, dataCount } = props;
             if(loader) {
                 return (
-                    <CircularProgress size={150} color="secondary" style={{marginLeft: '43%',marginTop:'20%'}}/>
+                    <CircularProgress size={120} color="secondary" style={{marginLeft: '43%',marginTop:'20%'}}/>
                 );
             }
             if(dataCount === 0) {

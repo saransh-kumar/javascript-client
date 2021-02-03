@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core';
 
 import { SnackBarContext } from '../../../../contexts';
-import callApi from '../../../../lib/utils/api';
+// import callApi from '../../../../lib/utils/api';
 
 class DeleteDialog extends Component {
   constructor(props) {
@@ -19,17 +19,18 @@ class DeleteDialog extends Component {
   }
 
   handleDeleteClose = async (event, value) => {
-    event.preventDefault();
-    const { details, onClose, renderTrainee } = this.props;
+    const { deleteTrainee, details, onClose, refetchQueries } = this.props;
     const originalDate = new Date(details.createdAt);
     const dateCheck = new Date('2019-02-14');
     const originalId = details.originalId;
-    await callApi('/trainee', 'DELETE', {originalId})
+    console.log('Delete', deleteTrainee);
+    // await callApi('/trainee', 'DELETE', {originalId})
+    await deleteTrainee({ variables: { originalId } })
       .then(() => {
         if (originalDate > dateCheck) {
           console.log('Deleted Item', details);
           value('Successfully Deleted!', 'success');
-          renderTrainee();
+          refetchQueries();
         } else {
           value("Can't Delete!", 'error');
         }
@@ -75,7 +76,8 @@ DeleteDialog.propTypes = {
   details: PropTypes.objectOf(PropTypes.any).isRequired,
   onClose: PropTypes.func,
   deleteOpen: PropTypes.bool,
-  renderTrainee: PropTypes.func.isRequired,
+  refetchQueries: PropTypes.isRequired,
+  deleteTrainee: PropTypes.isRequired,
 };
 
 DeleteDialog.defaultProps = {

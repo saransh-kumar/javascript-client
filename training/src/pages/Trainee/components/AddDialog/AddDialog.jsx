@@ -15,7 +15,7 @@ import * as yup from 'yup';
 
 import { Div, P } from './style';
 import { SnackBarContext } from '../../../../contexts';
-import callApi from '../../../../lib/utils/api';
+// import callApi from '../../../../lib/utils/api';
 import PropTypes from 'prop-types';
 import { CircularProgress } from '@material-ui/core';
 
@@ -72,20 +72,22 @@ handleClosed = () => {
 }
 
 onSubmit = async (event, openSnackBar) => {
-  event.preventDefault();
-  const { name, email, password, confirmPassword } = this.state;
-  const { renderTrainee } = this.props;
+  const { name, email, password } = this.state;
+  const { createTrainee, refetchQueries } = this.props;
+  console.log('Create', createTrainee);
+  console.log('Queries', refetchQueries);
   this.setState({loading: true});
-  await callApi('/trainee', 'POST', { name, email, password, confirmPassword })
+  // await callApi('/trainee', 'POST', { name, email, password, confirmPassword })
+  await createTrainee({ variables: { name, email, password }})
     .then(() => {
       openSnackBar('Trainee added successfully', 'Success');
-      renderTrainee();
-
+      refetchQueries();
     })
-    .catch(() => {
+    .catch((err) => {
+      console.log('Error', err);
       openSnackBar('Invalid Input', 'error');
     });
-  this.setState(this.baseState);
+    this.setState(this.baseState);
 };
 
 getError(field) {
@@ -269,7 +271,8 @@ render() {
 
 AddDialog.propTypes = {
   history: PropTypes.objectOf(PropTypes.any).isRequired,
-  renderTrainee: PropTypes.func.isRequired,
+  createTrainee: PropTypes.isRequired,
+  refetchQueries: PropTypes.isRequired
 };
 
 export default AddDialog;

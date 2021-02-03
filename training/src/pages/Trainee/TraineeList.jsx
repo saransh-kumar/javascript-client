@@ -33,7 +33,9 @@ class TraineeList extends Component {
 
   componentDidMount() {
     this.setState({ loader: true});
-    // this.renderData();
+    setTimeout(() => {
+      this.setState({ loader: false});
+    }, 600);
   }
 
   onOpen = () => {
@@ -103,22 +105,18 @@ class TraineeList extends Component {
   }
 
   renderData = () => {
+    this.setState({ loader: false});
   }
 
   render() {
+
     const {
       data: {
       getAllTrainees: { records = [], totalCount = 0 } = {},
       refetch
       },
     } = this.props;
-    if (records) {
-      setTimeout(() => {
-        this.setState({ loader: false});
-      }, 500);
-    } else {
-      this.setState({ loader: true});
-    }
+
     const { open, deleteDialog, order, sortedBy, page, edit, loader, traineeInfo, limit } = this.state;
     return (
       <>
@@ -127,7 +125,7 @@ class TraineeList extends Component {
             open={open}
             onClose={this.onCloseEvent}
             onSubmit={this.handleSubmit}
-            renderTrainee={this.renderData}
+            refetchQueries={refetch}
           />
         </div>
         {
@@ -181,7 +179,8 @@ class TraineeList extends Component {
               editOpen={edit}
               onClose={this.editDialogClose}
               details={traineeInfo}
-              renderTrainee={this.renderData}
+              renderTrainee={records}
+              refetchQueries={refetch}
             />
           )}
           { deleteDialog && (
@@ -189,7 +188,7 @@ class TraineeList extends Component {
               deleteOpen={deleteDialog}
               onClose={this.deleteDialogClose}
               details={traineeInfo}
-              renderTrainee={this.renderData}
+              refetchQueries={refetch}
             />
           )}
         </>
@@ -206,6 +205,6 @@ TraineeList.propTypes = {
 
 export default graphql(GET,
   {
-  options: { variables: { skip: '0', limit: '10', sortedBy: 'name', sortedOrder: '1' } },
+  options: { variables: { skip: '0', limit: '10', sortedBy: 'createdAt', sortedOrder: '-1' } },
   })(TraineeList);
   
