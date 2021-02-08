@@ -27,10 +27,11 @@ class DeleteDialog extends Component {
     // await callApi('/trainee', 'DELETE', {originalId})
     await deleteTrainee({ variables: { originalId } })
       .then(() => {
+        refetchQueries();
         if (originalDate > dateCheck) {
           console.log('Deleted Item', details);
           value('Successfully Deleted!', 'success');
-          refetchQueries();
+          
         } else {
           value("Can't Delete!", 'error');
         }
